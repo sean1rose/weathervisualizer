@@ -6,8 +6,8 @@ import * as CONSTANTS from './constants';
 // import secrets from './secrets';
 // const {API} = secrets;
 
-import LargeChart from './large-chart';
-import SmallChart from './small-chart';
+// import LargeChart from './large-chart';
+// import SmallChart from './small-chart';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class App extends Component {
 
   componentWillMount() {
     // d3-request json function
-    json(`${CONSTANTS.QUERY_PREFIX}?=${CONSTANTS.CITY_ID}&appid=${CONSTANTS.API}&units=imperial`, this.processResults);
+    json(`${CONSTANTS.QUERY_PREFIX}?id=${CONSTANTS.CITY_ID}&appid=${CONSTANTS.API}&units=imperial`, this.processResults);
   }
 
   highlightX(highlighted) {
@@ -30,8 +30,10 @@ class App extends Component {
 
   processResults(error, queryResults) {
     if (error) {
+      console.error('error - ', error);
       this.setState({error});
     }
+    console.log('json results from api call - ', queryResults);
     const data = CONSTANTS.KEYS.map(key => ({
       key,
       values: queryResults.list.map((d, i) => ({
@@ -50,4 +52,85 @@ class App extends Component {
     });
     this.setState({data});
   }
+
+  render() {
+    const {data, error, highlighted} = this.state;
+    if (error) {
+      return <div>
+        <div>Error loading weather information</div>
+        <div>{JSON.stringify(this.state.error)}</div>
+      </div>;
+    }
+    if (data) {
+      return <div className='app'>
+              <div 
+                className='title'
+                style={{
+                  background: '#282727',
+                  color: 'white',
+                  fontSize: 26,
+                  fontWeight: 500,
+                  height: 38,
+                  lineHeight: '38px',
+                  padding: '21px 24px 12px'
+                }}>
+                {data['city-name'] ? `Weather predictions for ${data['city-name']}` : null}
+              </div>
+              <div
+                className='card'
+                style={{
+                  background: 'white',
+                  boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)',
+                  borderRadius: 3,
+                  margin: 12,
+                  padding: 24,
+                  position: 'relative'
+                }}>
+
+                <LargeChart
+                  highlighted={highlighted}
+                  highlightX={this.highlightX}
+                  series={data.Temperature}
+                  title='Temperature'
+                  />
+            </div>
+            <div
+              className='bottom-row'
+              style={{
+                margin: '0 -12px 0 24px',
+              }}
+            >
+              <SmallChart
+                highlighted={highlighted}
+                highlightX={this.highlightX}
+                series={data.Pressure}
+                title='Pressure'
+              />
+              <SmallChart
+                highlighted={highlighted}
+                highlightX={this.highlightX}
+                series={data.Cloudiness}
+                title='Cloudiness'
+              />
+              <SmallChart
+                highlighted={highlighted}
+                highlightX={this.highlightX}
+                series={data['Wind speed']}
+                title='Wind Speed'
+              />
+              <SmallChart
+                highlighted={highlighted}
+                highlightX={this.highlightX}
+                series={data.Rain}
+                title='Rain'
+              />
+            </div>
+          </div>
+    }
+    return <div>
+    Loading data...
+    </div>
+  }
 }
+
+export default App;

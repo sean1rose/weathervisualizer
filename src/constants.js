@@ -1,5 +1,5 @@
 export const CITY_ID = 5368361;
-export const QUERY_PREFIX = 'http://api.openweathermap.org/data/2.5.forecast';
+export const QUERY_PREFIX = 'http://api.openweathermap.org/data/2.5/forecast';
 export const API = '7810e14ab82bf0938dec6f64a9991cea';
 export const KEYS = [
 	{
