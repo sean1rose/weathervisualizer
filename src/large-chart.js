@@ -4,6 +4,7 @@ import {
 	LineSeries,
 	makeWidthFlexible,
 	MarkSeries,
+	HorizontalGridLines,
 	VerticalGridLines,
 	XAxis,
 	XYPlot,
@@ -28,26 +29,26 @@ export default class LargeChart extends Component {
 		const labelValues = makeLabelValues(series);
 	
 
-	return <div style={{
-			background: 'white',
-			borderRadius: '3px',
-			height: '345px',
-			position: 'realtive',
-			width: '100%'
-		}}>
-		<div style={{
-			fontSize: 20,
-			fontWeight: 500,
-			lineHeight: '26px',
-			marginBottom: 12,
-			marginLeft: 40
-		}}{this.props.title}</div>
-		<FlexibleXYPlot
-			height={300}
-			margin={{top: 5, bottom: 25, left: 40, right: 0}}
-			onMouseLeave={() => this.props.highlightX(null)}
-			yDomain={yDomain}
-		>
+    return <div style={{
+    	background: 'white',
+    	borderRadius: '3px',
+    	height: '345px',
+    	position: 'relative',
+    	width: '100%'
+    }}>
+    <div style={{
+    	fontSize: 20,
+      fontWeight: 500,
+    	lineHeight: '26px',
+    	marginBottom: 12,
+      marginLeft: 40
+    }}>{this.props.title}</div>
+    <FlexibleXYPlot
+    	height={300}
+    	margin={{top: 5, bottom: 25, left: 40, right: 0}}
+    	onMouseLeave={() => this.props.highlightX(null)}
+    	yDomain={yDomain}
+    >
 			{/* ^FlexibleXYPlot represents the entire chart. If mouse leaves the chart, then no highlight  */}
 
 			<VerticalGridLines
@@ -101,10 +102,10 @@ export default class LargeChart extends Component {
 	}
 }
 
-export function makeLabelValues(series){
-	const firstDate = new Date(series[0].x);
-	const firstDateHour = firstDate.getHours();
-	const firstMidnight = series[0].x + (24 - firstDateHour) * HOUR_IN_MS;
+export function makeLabelValues(series) {
+  const firstDate = new Date(series[0].x);
+  const firstDateHour = firstDate.getHours();
+  const firstMidnight = series[0].x + (24 - firstDateHour) * HOUR_IN_MS;
 
-	return [0,1,2,3,4].map(d => firstMidnight + d * DAY_IN_MS);
+  return [0, 1, 2, 3, 4].map(d => firstMidnight + d * DAY_IN_MS);
 }

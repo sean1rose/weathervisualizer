@@ -6,8 +6,8 @@ import * as CONSTANTS from './constants';
 // import secrets from './secrets';
 // const {API} = secrets;
 
-// import LargeChart from './large-chart';
-// import SmallChart from './small-chart';
+import LargeChart from './large-chart';
+import SmallChart from './small-chart';
 
 class App extends Component {
   constructor(props) {
